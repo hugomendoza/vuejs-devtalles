@@ -13,11 +13,21 @@
       <tbody>
         <!-- row 1 -->
         <!-- row 2 -->
-        <tr class="hover:bg-base-300">
-          <th>2</th>
-          <td>Hart Hagerty</td>
-          <td>Desktop Support Technician</td>
-          <td>Purple</td>
+        <tr
+          class="hover:bg-base-300"
+          v-for="(project, index) in projectsStore.projectsWithCompletion"
+          :key="project.id"
+        >
+          <th>{{ index + 1 }}</th>
+          <td>{{ project.name }}</td>
+          <td>{{ project.taskCount }}</td>
+          <td>
+            <progress
+              class="progress progress-primary w-56"
+              :value="project.completion"
+              max="100"
+            ></progress>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -29,7 +39,7 @@
     sub-title="Ingresa un nuevo proyecto"
     :open="modalOpen"
     @close="modalOpen = false"
-    @value="onNewValue($event)"
+    @value="projectsStore.addProject"
   />
 
   <custom-modal :open="customModalOpen">
@@ -67,11 +77,10 @@ import InputModal from '@/modules/common/components/InputModal.vue'
 import AddCircle from '@/modules/common/icons/AddCircle.vue'
 import ModalIcon from '@/modules/common/icons/ModalIcon.vue'
 import { ref } from 'vue'
+import { useProjectStore } from '../store/projects.store'
 
 const modalOpen = ref(false)
 const customModalOpen = ref(false)
 
-const onNewValue = (projectName: string) => {
-  console.log({ projectName })
-}
+const projectsStore = useProjectStore()
 </script>
